@@ -19,7 +19,7 @@ class TwitchChat(commands.Bot):
 
         # Print the contents of our message to console...
         print(message.content)
-        subprocess.run(['SeikaSay2', '-c', '5219', '-t', message.content])
+        subprocess.run(['SeikaSay2', '-cid', '5219', '-t', message.content])
 
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
