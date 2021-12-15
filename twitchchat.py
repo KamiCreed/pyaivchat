@@ -13,6 +13,14 @@ class TwitchChat(commands.Bot):
         self.prefix = prefix
         self.seika = SeikaPick()
 
+        self.voice_sub = {
+                'ls': self._voice_ls,
+                'change': self._voice_change,
+                'pitch': self._voice_pitch,
+                'speed': self._voice_speed,
+                'inton': self._voice_inton,
+                }
+
     async def event_ready(self):
         # We are logged in and ready to chat and use commands...
         print(f'Logged in as | {self.nick}')
@@ -37,3 +45,27 @@ class TwitchChat(commands.Bot):
     async def hello(self, ctx: commands.Context):
         # Send a hello back!
         await ctx.send(f'Hello {ctx.author.name}!')
+
+    @commands.command()
+    async def voice(self, ctx: commands.Context):
+        cmd = f"{ctx.prefix}voice"
+
+        args = ctx.message.content.split()
+        # Remove command
+        args.pop(0)
+
+        subcmd = args.pop(0)
+
+        # Invoke subcommand
+        await self.voice_sub[subcmd](ctx, args)
+
+    async def _voice_ls(self, ctx: commands.Context, args):
+        # List TTS voice keys
+        voices = self.seika.get_voices()
+        sep = ', '
+        await ctx.send(f'Avail voices: {sep.join(voices)}')
+
+    async def _voice_change(self, args):
+    async def _voice_speed(self, args):
+    async def _voice_pitch(self, args):
+    async def _voice_inton(self, args):
