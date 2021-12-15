@@ -38,9 +38,9 @@ class SeikaPick:
         for key, name_map in self.name_maps.items():
             if os.path.isfile(self.json_filenames[key]):
                 with open(self.json_filenames[key]) as json_file:
-                    name_map = json.load(json_file)
+                    self.name_maps[key] = json.load(json_file)
             else:
-                name_map = {}
+                self.name_maps[key] = {}
 
     def say(self, voice_id, speed, pitch, intonation, msg):
         subprocess.run(['SeikaSay2', '-cid', str(voice_id), '-speed', str(speed), '-pitch', str(pitch), 
