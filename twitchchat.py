@@ -7,6 +7,8 @@ class TwitchChat(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         super().__init__(token=token, prefix=prefix, initial_channels=initial_channels)
 
+        self.prefix = prefix
+
     async def event_ready(self):
         # We are logged in and ready to chat and use commands...
         print(f'Logged in as | {self.nick}')
