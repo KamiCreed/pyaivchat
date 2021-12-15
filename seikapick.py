@@ -48,7 +48,11 @@ class SeikaPick:
 
     def say_for_user(self, username, msg, key=KEY_TWITCH):
         if username not in self.name_maps[key]:
-            self.pick_voice(username, random.choice(list(self.voice_id_map.keys())), key) # Pick a random voice
+            print("Randomly choosing a name for new user...")
+            voice_key = random.choice(list(self.voice_id_map.keys())) # Pick a random voice
+            self.pick_voice(username, voice_key, key) # Pick a random voice
+            print("Voice chosen: ", voice_key)
+
         speed = self.name_maps[key][username][KEY_SPEED] if KEY_SPEED in self.name_maps[key][username] else self.speed
         pitch = self.name_maps[key][username][KEY_PITCH] if KEY_PITCH in self.name_maps[key][username] else self.pitch
         intonation = self.name_maps[key][username][KEY_INTONATION] if KEY_INTONATION in self.name_maps[key][username] else self.intonation
