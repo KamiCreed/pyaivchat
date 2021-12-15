@@ -25,6 +25,7 @@ def start_twitch(prefix):
         initial_channels=[os.environ['CHANNEL']]
     )
     bot.run()
+    bot.close()
 
 def main():
     prefix = os.environ['BOT_PREFIX']
