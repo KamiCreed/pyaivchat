@@ -1,6 +1,7 @@
 import os
 import argparse
 import pytchat
+import asyncio
 
 from ytchat import YtChat
 from twitchchat import TwitchChat
@@ -18,6 +19,7 @@ def start_yt(prefix, vid_id):
                 ytchat.send_message(cmd)
 
 def start_twitch(prefix):
+    loop = asyncio.get_event_loop()
     bot = TwitchChat(
         # set up the bot
         token=os.environ['TOKEN'],
@@ -25,7 +27,7 @@ def start_twitch(prefix):
         initial_channels=[os.environ['CHANNEL']]
     )
     bot.run()
-    bot.close()
+    loop.run_until_complete(bot.close())
 
 def main():
     prefix = os.environ['BOT_PREFIX']
