@@ -1,7 +1,7 @@
 import subprocess
 import json
 import os
-import random
+from random import Random
 import copy
 
 from consts import *
@@ -35,6 +35,8 @@ class SeikaPick:
                 KEY_YOUTUBE: {},
                 }
 
+        self.user_rand = Random() # Used to keep the same voice for new users
+
         for key, name_map in self._name_maps.items():
             if os.path.isfile(self._json_filenames[key]):
                 with open(self._json_filenames[key]) as json_file:
@@ -52,18 +54,20 @@ class SeikaPick:
 
     def say_for_user(self, username, msg, key=KEY_TWITCH):
         if username not in self._name_maps[key]:
-            print("Randomly choosing a name for new user...")
-            voice_key = random.choice(list(self._voice_id_map.keys())) # Pick a random voice
-            self._pick_voice(username, voice_key, key) # Pick a random voice
+            print("Using username as seed to choose a voice...")
+            self.user_rand.seed(username) # Pick random voice, but be the same for their user
+            voice_key = self.user_rand.choice(list(self._voice_id_map.keys()))
             print("Voice chosen: ", voice_key)
+            voice_id = self._voice_id_map[voice_key]
+        else:
+            voice_id = self._voice_id_map[self._name_maps[key][username][KEY_VOICE]]
 
         speed = self._name_maps[key][username][KEY_SPEED] if KEY_SPEED in self._name_maps[key][username] else self._speed
         pitch = self._name_maps[key][username][KEY_PITCH] if KEY_PITCH in self._name_maps[key][username] else self._pitch
         intonation = self._name_maps[key][username][KEY_INTONATION] if KEY_INTONATION in self._name_maps[key][username] else self._intonation
-        voice_id = self._voice_id_map[self._name_maps[key][username][KEY_VOICE]]
         self._say(voice_id, speed, pitch, intonation, msg)
 
-    def _pick_voice(self, username, voice_id, key=KEY_TWITCH):
+    def pick_voice(self, username, voice_id, key=KEY_TWITCH):
         self._name_maps[key][username] = {}
         self._name_maps[key][username][KEY_VOICE] = voice_id
         self._save_json(self._name_maps[key], self._json_filenames[key])

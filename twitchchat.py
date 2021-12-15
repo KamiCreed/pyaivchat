@@ -54,18 +54,25 @@ class TwitchChat(commands.Bot):
         # Remove command
         args.pop(0)
 
-        subcmd = args.pop(0)
+        if not subcmd:
+            sep = ', '
+            # List subcommands
+            await ctx.send(f'Subcommands: {sep.join(list(self.voice_sub.keys()))}')
+        else:
+            subcmd = args.pop(0)
 
-        # Invoke subcommand
-        await self.voice_sub[subcmd](ctx, args)
+            # Invoke subcommand
+            await self.voice_sub[subcmd](ctx, args)
 
     async def _voice_ls(self, ctx: commands.Context, args):
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await ctx.send(f'Avail voices: {sep.join(voices)}')
+        await ctx.send(f'Voices: {sep.join(voices)}')
 
     async def _voice_change(self, ctx: commands.Context, args):
+        if not args:
+            await ctx.send(f'Run voice ls to see a list of voices')
         await ctx.send(f'Hello {ctx.author.name}!')
 
     async def _voice_speed(self, ctx: commands.Context, args):
