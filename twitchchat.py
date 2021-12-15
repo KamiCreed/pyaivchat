@@ -1,5 +1,8 @@
 from twitchio.ext import commands
 import subprocess
+from seikapick import SeikaPick
+
+from consts import *
 
 class TwitchChat(commands.Bot):
 
@@ -8,6 +11,7 @@ class TwitchChat(commands.Bot):
         super().__init__(token=token, prefix=prefix, initial_channels=initial_channels)
 
         self.prefix = prefix
+        self.seika = SeikaPick()
 
     async def event_ready(self):
         # We are logged in and ready to chat and use commands...
@@ -20,10 +24,10 @@ class TwitchChat(commands.Bot):
             return
 
         # Print the contents of our message to console...
-        print(message.content)
+        print(message.author.name, message.content)
 
         if not message.content.startswith(self.prefix) and not message.content.startswith('!'):
-            subprocess.run(['SeikaSay2', '-cid', '5219', '-t', message.content])
+            self.seika.say_for_user(message.author.name, message.content)
 
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
