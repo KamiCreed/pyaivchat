@@ -3,6 +3,7 @@ import os
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
+from google.auth.transport.requests import Request
 import pickle
 
 class YtChat:
