@@ -50,5 +50,5 @@ class SeikaPick:
         self.save_json(self.name_maps[key], self.json_filenames[key])
 
     def save_json(self, name_map, filename):
-        with open(filename) as out:
+        with open(filename, 'w') as out:
             json.dump(name_map, out)
