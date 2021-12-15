@@ -65,7 +65,14 @@ class TwitchChat(commands.Bot):
         sep = ', '
         await ctx.send(f'Avail voices: {sep.join(voices)}')
 
-    async def _voice_change(self, args):
-    async def _voice_speed(self, args):
-    async def _voice_pitch(self, args):
-    async def _voice_inton(self, args):
+    async def _voice_change(self, ctx: commands.Context, args):
+        await ctx.send(f'Hello {ctx.author.name}!')
+
+    async def _voice_speed(self, ctx: commands.Context, args):
+        await ctx.send(f'Hello {ctx.author.name}!')
+
+    async def _voice_pitch(self, ctx: commands.Context, args):
+        await ctx.send(f'Hello {ctx.author.name}!')
+
+    async def _voice_inton(self, ctx: commands.Context, args):
+        await ctx.send(f'Hello {ctx.author.name}!')
