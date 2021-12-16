@@ -55,8 +55,7 @@ class SeikaPick:
     def say_for_user(self, username, msg, key=KEY_TWITCH):
         if username not in self._name_maps[key]:
             print("Using username as seed to choose a voice...")
-            self.user_rand.seed(username) # Pick random voice, but be the same for their user
-            voice_key = self.user_rand.choice(list(self._voice_id_map.keys()))
+            voice_key = self._pick_rand_voice(username)
             print("Voice chosen: ", voice_key)
             voice_id = self._voice_id_map[voice_key]
         else:
@@ -67,9 +66,40 @@ class SeikaPick:
         intonation = self._name_maps[key][username][KEY_INTONATION] if KEY_INTONATION in self._name_maps[key][username] else self._intonation
         self._say(voice_id, speed, pitch, intonation, msg)
 
-    def pick_voice(self, username, voice_id, key=KEY_TWITCH):
+    def _pick_rand_voice(self, username):
+        self.user_rand.seed(username) # Pick random voice, but be the same for their user
+        voice_key = self.user_rand.choice(list(self._voice_id_map.keys()))
+        return voice_key
+
+    def pick_voice(self, username, voice_key, key=KEY_TWITCH):
+        if voice_key not in self._voice_id_map:
+            return False
         self._name_maps[key][username] = {}
-        self._name_maps[key][username][KEY_VOICE] = voice_id
+        self._name_maps[key][username][KEY_VOICE] = voice_key
+        return True
+
+    def _give_voice_if_needed(self, username, key=KEY_TWITCH
+        if username not in self._name_maps[key]:
+            self._name_maps[key][username] = {}
+            self._name_maps[key][username][KEY_VOICE] = self._pick_rand_voice(username)
+
+    def pick_speed(self, username, speed, key=KEY_TWITCH):
+        if speed > 2 or speed < 0:
+            return False
+        self._give_voice_if_needed(username, key)
+        self._name_maps[key][username][KEY_SPEED] = speed
+        return True
+
+    def pick_pitch(self, username, pitch, key=KEY_TWITCH):
+        self._give_voice_if_needed(username, key)
+        self._name_maps[key][username][KEY_PITCH] = speed
+
+    def pick_intonation(self, username, intonation, key=KEY_TWITCH):
+        self._give_voice_if_needed(username, key)
+        self._name_maps[key][username][KEY_INTONATION] = speed
+
+    def save(self, key=KEY_TWITCH):
+        # Save corresponding JSON file
         self._save_json(self._name_maps[key], self._json_filenames[key])
 
     @staticmethod

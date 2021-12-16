@@ -72,13 +72,50 @@ class TwitchChat(commands.Bot):
 
     async def _voice_change(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(f'Run voice ls to see a list of voices')
-        await ctx.send(f'Hello {ctx.author.name}!')
+            await ctx.send(f'Usage: {ctx.prefix}voice change <voice> <opt:speed> <opt:pitch> <opt:intonation>')
+            await ctx.send(f'Run {ctx.prefix}voice ls to see a list of voices')
+            return
+        
+        voice_key = args.pop(0)
+        success = self.seika.pick_voice(ctx.author.name, voice_key)
+        if success:
+            await ctx.send(f'{ctx.author.name} Voice changed to {voice_key}')
+        else:
+            await ctx.send(f'{ctx.author.name} Invalid voice key. Check {ctx.prefix}voice ls')
+
+        if args:
+            await self._voice_speed(ctx, args)
 
     async def _voice_speed(self, ctx: commands.Context, args):
-        await ctx.send(f'Hello {ctx.author.name}!')
+        try:
+            speed = float(args.pop(0))
+        except ValueError:
+            await ctx.send(f'{ctx.author.name} Speed value not a number')
+
+        success = self.seika.pick_speed(speed)
+        if success:
+            await ctx.send(f'{ctx.author.name} Voice speed changed to {speed}')
+        else:
+            await ctx.send(f'{ctx.author.name} Voice speed must be between 0.0 and 2.0')
+
+        if args:
+            await self._voice_speed(ctx, args)
 
     async def _voice_pitch(self, ctx: commands.Context, args):
+        try:
+            speed = int(args.pop(0))
+        except ValueError:
+            await ctx.send(f'{ctx.author.name} Speed value not a number')
+            return
+
+        success = self.seika.pick_speed(speed)
+        if success:
+            await ctx.send(f'{ctx.author.name} Voice speed changed to {speed}')
+        else:
+            await ctx.send(f'{ctx.author.name} Voice speed must be between 0.0 and 2.0')
+
+        if args:
+            await self._voice_speed(ctx, args)
         await ctx.send(f'Hello {ctx.author.name}!')
 
     async def _voice_inton(self, ctx: commands.Context, args):
