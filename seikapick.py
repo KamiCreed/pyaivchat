@@ -48,7 +48,6 @@ class SeikaPick:
     def get_voices(self):
         return list(self._voice_id_map.keys())
 
-    @staticmethod
     def _say(voice_id, speed, pitch, intonation, msg):
         self._tts_queue.put(['SeikaSay2', '-cid', str(voice_id), '-speed', str(speed), '-pitch', str(pitch), 
           '-intonation', str(intonation), '-t', msg])
