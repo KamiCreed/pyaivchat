@@ -62,10 +62,11 @@ class SeikaPick:
             pitch = self._pitch
             intonation = self._intonation
         else:
+            user_params = self._name_maps[key][username]
             voice_id = self._voice_id_map[self._name_maps[key][username][KEY_VOICE]]
-            speed = self._name_maps[key][username][KEY_SPEED] if KEY_SPEED in self._name_maps[key][username] else self._speed
-            pitch = self._name_maps[key][username][KEY_PITCH] if KEY_PITCH in self._name_maps[key][username] else self._pitch
-            intonation = self._name_maps[key][username][KEY_INTONATION] if KEY_INTONATION in self._name_maps[key][username] else self._intonation
+            speed = user_params[KEY_SPEED] if KEY_SPEED in user_params else self._speed
+            pitch = user_params[KEY_PITCH] if KEY_PITCH in user_params else self._pitch
+            intonation = user_params[KEY_INTONATION] if KEY_INTONATION in user_params else self._intonation
 
         self._say(voice_id, speed, pitch, intonation, msg)
 
@@ -109,8 +110,13 @@ class SeikaPick:
 
     def get_params(self, username, key=KEY_TWITCH):
         # Raises KeyError exception
-        user_param = self._name_maps[key][username]
-        return user_param[KEY_VOICE], user_param[KEY_SPEED], user_param[KEY_PITCH], user_param[KEY_INTONATION]
+        user_params = self._name_maps[key][username]
+        voice_id = user_params[KEY_VOICE]
+        speed = user_params[KEY_SPEED] if KEY_SPEED in user_params else self._speed
+        pitch = user_params[KEY_PITCH] if KEY_PITCH in user_params else self._pitch
+        intonation = user_params[KEY_INTONATION] if KEY_INTONATION in user_params else self._intonation
+
+        return voice_id, speed, pitch, intonation
 
     def save(self, key=KEY_TWITCH):
         # Save corresponding JSON file
