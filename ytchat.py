@@ -21,10 +21,8 @@ class YtChat:
             prefix,
             loop: asyncio.AbstractEventLoop = None,
             ):
-        self._loop = loop or asyncio.get_event_loop()
         self._ytauth = YtAuth(secret_file, vid_id)
-
-        self._chat = pytchat.create(video_id=vid_id)
+        self._vid_id = vid_id
 
         self.prefix = prefix
         self.seika = SeikaPick(KEY_YOUTUBE)
@@ -42,29 +40,29 @@ class YtChat:
                 'show': self._voice_show,
                 }
 
+        # Hardcode bot names
+        self.bot_names = ['Shiori Bot']
+
     def run(self):
-        try:
-            self._loop.create_task(self._run())
-            self._loop.run_forever()
-        except KeyboardInterrupt:
-            pass
-        finally:
-            #self._loop.run_until_complete(self.close())
-            self._loop.close()
+        asyncio.run(self._run())
 
     async def _run(self):
         print("Getting chat messages...")
-        while self._chat.is_alive():
-            async for c in self._chat.get().async_items():
-                print(f"{c.datetime} [{c.author.name}]- {c.message}")
+        chat = pytchat.create(video_id=self._vid_id)
+        while chat.is_alive():
+            for ctx in chat.get().sync_items():
+                print(f"{ctx.datetime} [{ctx.author.name}]- {ctx.message}")
                 try:
-                    await self._parse(c)
+                    await self._parse(ctx)
                 except Exception:
                     traceback.print_exc()
-                    print("Ignoring and continuing...")
+                    logging.info("Ignoring exception...")
 
     async def _parse(self, ctx):
-        if not ctx.message.startswith(self.prefix) and not message.content.startswith('!'):
+        if ctx.author.name in self.bot_names:
+            return
+
+        if not ctx.message.startswith(self.prefix) and not ctx.message.startswith('!'):
             self.seika.say_for_user(ctx.author.name, ctx.message)
             return
 
@@ -72,7 +70,11 @@ class YtChat:
             msg_str = ctx.message[len(self.prefix):]
             args = msg_str.split()
             cmd = args.pop(0)
-            await self._cmds[cmd](ctx)
+            try:
+                await self._cmds[cmd](ctx)
+            except Exception:
+                traceback.print_exc()
+                print("Ignoring and continuing...")
 
     async def voice(self, ctx):
         cmd = f"{self.prefix}voice"
