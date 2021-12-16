@@ -1,21 +1,12 @@
 import os
 import argparse
-import pytchat
 
 from ytchat import YtChat
 from twitchchat import TwitchChat
 
 def start_yt(prefix, vid_id):
-    ytchat = YtChat("client_secret.json", vid_id)
-
-    chat = pytchat.create(video_id=vid_id)
-    print("Getting chat messages...")
-    while chat.is_alive():
-        for c in chat.get().sync_items():
-            print(f"{c.datetime} [{c.author.name}]- {c.message}")
-            if c.message.startswith(prefix):
-                cmd = c.message[len(prefix):]
-                ytchat.send_message(cmd)
+    ytchat = YtChat(secret_file="client_secret.json", vid_id=vid_id, prefix=prefix)
+    ytchat.run()
 
 def start_twitch(prefix):
     bot = TwitchChat(

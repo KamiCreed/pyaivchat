@@ -1,5 +1,6 @@
 KEY_TWITCH = 'twitch'
 KEY_YOUTUBE = 'yt'
+KEY_VOICE = 'voice'
 VOICE_SUB = 'Usage: {prefix}voice [{keys}]'
 VOICE_LS = '{username} Voices: {voices}'
 

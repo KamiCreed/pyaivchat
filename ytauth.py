@@ -61,7 +61,7 @@ class YtAuth:
 
         return credentials
 
-    def send_message(self, msg):
+    async def send(self, msg):
         print("Sending message: ", msg)
         request = self.youtube.liveChatMessages().insert(
             part="snippet",
