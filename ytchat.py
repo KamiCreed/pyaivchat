@@ -64,6 +64,10 @@ class YtChat:
                     print("Ignoring and continuing...")
 
     async def _parse(self, ctx):
+        if not ctx.message.startswith(self.prefix) and not message.content.startswith('!'):
+            self.seika.say_for_user(ctx.author.name, ctx.message)
+            return
+
         if ctx.message.startswith(self.prefix):
             msg_str = ctx.message[len(self.prefix):]
             args = msg_str.split()
