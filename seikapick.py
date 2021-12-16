@@ -78,7 +78,7 @@ class SeikaPick:
         self._name_maps[key][username][KEY_VOICE] = voice_key
         return True
 
-    def _give_voice_if_needed(self, username, key=KEY_TWITCH
+    def _give_voice_if_needed(self, username, key=KEY_TWITCH):
         if username not in self._name_maps[key]:
             self._name_maps[key][username] = {}
             self._name_maps[key][username][KEY_VOICE] = self._pick_rand_voice(username)

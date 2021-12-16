@@ -69,7 +69,7 @@ class TwitchChat(commands.Bot):
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await ctx.send(VOICE_LS.format(sep.join(voices))
+        await ctx.send(VOICE_LS.format(sep.join(voices)))
 
     async def _voice_change(self, ctx: commands.Context, args):
         if not args:
