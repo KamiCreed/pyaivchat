@@ -58,12 +58,15 @@ class SeikaPick:
             voice_key = self._pick_rand_voice(username)
             print("Voice chosen: ", voice_key)
             voice_id = self._voice_id_map[voice_key]
+            speed = self._speed
+            pitch = self._pitch
+            intonation = self._intonation
         else:
             voice_id = self._voice_id_map[self._name_maps[key][username][KEY_VOICE]]
+            speed = self._name_maps[key][username][KEY_SPEED]
+            pitch = self._name_maps[key][username][KEY_PITCH]
+            intonation = self._name_maps[key][username][KEY_INTONATION]
 
-        speed = self._name_maps[key][username][KEY_SPEED] if KEY_SPEED in self._name_maps[key][username] else self._speed
-        pitch = self._name_maps[key][username][KEY_PITCH] if KEY_PITCH in self._name_maps[key][username] else self._pitch
-        intonation = self._name_maps[key][username][KEY_INTONATION] if KEY_INTONATION in self._name_maps[key][username] else self._intonation
         self._say(voice_id, speed, pitch, intonation, msg)
 
     def _pick_rand_voice(self, username):
