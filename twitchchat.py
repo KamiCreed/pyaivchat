@@ -57,7 +57,7 @@ class TwitchChat(commands.Bot):
         if not args:
             sep = ', '
             # List subcommands
-            await ctx.send(VOICE_SUB.format(sep.join(list(self.voice_sub.keys()))))
+            await ctx.send(VOICE_SUB.format(keys=sep.join(list(self.voice_sub.keys()))))
             return
 
         subcmd = args.pop(0)
@@ -69,12 +69,12 @@ class TwitchChat(commands.Bot):
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await ctx.send(VOICE_LS.format(sep.join(voices)))
+        await ctx.send(VOICE_LS.format(voices=sep.join(voices)))
 
     async def _voice_change(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(VOICE_CHANGE_USAGE.format(ctx.prefix))
-            #await ctx.send(VOICE_CHANGE_CHECK.format(ctx.prefix))
+            await ctx.send(VOICE_CHANGE_USAGE.format(prefix=ctx.prefix))
+            #await ctx.send(VOICE_CHANGE_CHECK.format(prefix=ctx.prefix))
             return
         
         voice_key = args.pop(0)
@@ -91,19 +91,19 @@ class TwitchChat(commands.Bot):
 
     async def _voice_speed(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(VOICE_SPEED_USAGE.format(ctx.prefix))
+            await ctx.send(VOICE_SPEED_USAGE.format(prefix=ctx.prefix))
             return
 
         try:
             speed = float(args.pop(0))
         except ValueError:
-            await ctx.send(VOICE_SPEED_NAN.format(ctx.author.name))
+            await ctx.send(VOICE_SPEED_NAN.format(username=ctx.author.name))
 
         success = self.seika.pick_speed(speed)
         if success:
-            await ctx.send(VOICE_SPEED_SUCCESS.format(ctx.author.name, speed))
+            await ctx.send(VOICE_SPEED_SUCCESS.format(username=ctx.author.name, speed=speed))
         else:
-            await ctx.send(VOICE_SPEED_FAIL.format(ctx.author.name))
+            await ctx.send(VOICE_SPEED_FAIL.format(username=ctx.author.name))
 
         if args:
             await self._voice_speed(ctx, args)
@@ -112,20 +112,20 @@ class TwitchChat(commands.Bot):
 
     async def _voice_pitch(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(VOICE_PITCH_USAGE.format(ctx.prefix))
+            await ctx.send(VOICE_PITCH_USAGE.format(prefix=ctx.prefix))
             return
 
         try:
             pitch = int(args.pop(0))
         except ValueError:
-            await ctx.send(VOICE_PITCH_NAN.format(ctx.author.name))
+            await ctx.send(VOICE_PITCH_NAN.format(username=ctx.author.name))
             return
 
         success = self.seika.pick_pitch(pitch)
         if success:
-            await ctx.send(VOICE_PITCH_SUCCESS.format(ctx.author.name, pitch))
+            await ctx.send(VOICE_PITCH_SUCCESS.format(username=ctx.author.name, pitch=pitch))
         else:
-            await ctx.send(VOICE_PITCH_FAIL.format(ctx.author.name))
+            await ctx.send(VOICE_PITCH_FAIL.format(username=ctx.author.name))
 
         if args:
             await self._voice_inton(ctx, args)
@@ -134,18 +134,18 @@ class TwitchChat(commands.Bot):
 
     async def _voice_inton(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(VOICE_INTON_USAGE.format(ctx.prefix))
+            await ctx.send(VOICE_INTON_USAGE.format(prefix=ctx.prefix))
             return
 
         try:
             inton = int(args.pop(0))
         except ValueError:
-            await ctx.send(VOICE_INTON_NAN.format(ctx.author.name))
+            await ctx.send(VOICE_INTON_NAN.format(username=ctx.author.name))
             return
 
         success = self.seika.pick_intonation(inton)
         if success:
             self.seika.save()
-            await ctx.send(VOICE_INTON_SUCCESS.format(ctx.author.name, inton))
+            await ctx.send(VOICE_INTON_SUCCESS.format(username=ctx.author.name, inton=inton))
         else:
-            await ctx.send(VOICE_INTON_FAIL.format(ctx.author.name))
+            await ctx.send(VOICE_INTON_FAIL.format(username=ctx.author.name))
