@@ -57,66 +57,95 @@ class TwitchChat(commands.Bot):
         if not subcmd:
             sep = ', '
             # List subcommands
-            await ctx.send(f'Subcommands: {sep.join(list(self.voice_sub.keys()))}')
-        else:
-            subcmd = args.pop(0)
+            await ctx.send(VOICE_SUB.format(sep.join(list(self.voice_sub.keys()))))
+            return
 
-            # Invoke subcommand
-            await self.voice_sub[subcmd](ctx, args)
+        subcmd = args.pop(0)
+
+        # Invoke subcommand
+        await self.voice_sub[subcmd](ctx, args)
 
     async def _voice_ls(self, ctx: commands.Context, args):
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await ctx.send(f'Voices: {sep.join(voices)}')
+        await ctx.send(VOICE_LS.format(sep.join(voices))
 
     async def _voice_change(self, ctx: commands.Context, args):
         if not args:
-            await ctx.send(f'Usage: {ctx.prefix}voice change <voice> <opt:speed> <opt:pitch> <opt:intonation>')
-            await ctx.send(f'Run {ctx.prefix}voice ls to see a list of voices')
+            await ctx.send(VOICE_CHANGE_USAGE.format(ctx.prefix))
+            #await ctx.send(VOICE_CHANGE_CHECK.format(ctx.prefix))
             return
         
         voice_key = args.pop(0)
         success = self.seika.pick_voice(ctx.author.name, voice_key)
         if success:
-            await ctx.send(f'{ctx.author.name} Voice changed to {voice_key}')
+            await ctx.send(VOICE_CHANGE_SUCCESS.format(username=ctx.author.name, voice_key=voice_key))
         else:
-            await ctx.send(f'{ctx.author.name} Invalid voice key. Check {ctx.prefix}voice ls')
+            await ctx.send(VOICE_CHANGE_FAIL.format(username=ctx.author.name, prefix=ctx.prefix))
 
         if args:
             await self._voice_speed(ctx, args)
+        else:
+            self.seika.save()
 
     async def _voice_speed(self, ctx: commands.Context, args):
+        if not args:
+            await ctx.send(VOICE_SPEED_USAGE.format(ctx.prefix))
+            return
+
         try:
             speed = float(args.pop(0))
         except ValueError:
-            await ctx.send(f'{ctx.author.name} Speed value not a number')
+            await ctx.send(VOICE_SPEED_NAN.format(ctx.author.name))
 
         success = self.seika.pick_speed(speed)
         if success:
-            await ctx.send(f'{ctx.author.name} Voice speed changed to {speed}')
+            await ctx.send(VOICE_SPEED_SUCCESS.format(ctx.author.name, speed))
         else:
-            await ctx.send(f'{ctx.author.name} Voice speed must be between 0.0 and 2.0')
+            await ctx.send(VOICE_SPEED_FAIL.format(ctx.author.name))
 
         if args:
             await self._voice_speed(ctx, args)
+        else:
+            self.seika.save()
 
     async def _voice_pitch(self, ctx: commands.Context, args):
-        try:
-            speed = int(args.pop(0))
-        except ValueError:
-            await ctx.send(f'{ctx.author.name} Speed value not a number')
+        if not args:
+            await ctx.send(VOICE_PITCH_USAGE.format(ctx.prefix))
             return
 
-        success = self.seika.pick_speed(speed)
+        try:
+            pitch = int(args.pop(0))
+        except ValueError:
+            await ctx.send(VOICE_PITCH_NAN.format(ctx.author.name))
+            return
+
+        success = self.seika.pick_pitch(pitch)
         if success:
-            await ctx.send(f'{ctx.author.name} Voice speed changed to {speed}')
+            await ctx.send(VOICE_PITCH_SUCCESS.format(ctx.author.name, pitch))
         else:
-            await ctx.send(f'{ctx.author.name} Voice speed must be between 0.0 and 2.0')
+            await ctx.send(VOICE_PITCH_FAIL.format(ctx.author.name))
 
         if args:
-            await self._voice_speed(ctx, args)
-        await ctx.send(f'Hello {ctx.author.name}!')
+            await self._voice_inton(ctx, args)
+        else:
+            self.seika.save()
 
     async def _voice_inton(self, ctx: commands.Context, args):
-        await ctx.send(f'Hello {ctx.author.name}!')
+        if not args:
+            await ctx.send(VOICE_INTON_USAGE.format(ctx.prefix))
+            return
+
+        try:
+            inton = int(args.pop(0))
+        except ValueError:
+            await ctx.send(VOICE_INTON_NAN.format(ctx.author.name))
+            return
+
+        success = self.seika.pick_intonation(inton)
+        if success:
+            self.seika.save()
+            await ctx.send(VOICE_INTON_SUCCESS.format(ctx.author.name, inton))
+        else:
+            await ctx.send(VOICE_INTON_FAIL.format(ctx.author.name))
