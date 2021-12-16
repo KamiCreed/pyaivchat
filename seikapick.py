@@ -107,6 +107,11 @@ class SeikaPick:
         self._name_maps[key][username][KEY_INTONATION] = speed
         return True
 
+    def get_params(self, username, key=KEY_TWITCH):
+        # Raises KeyError exception
+        user_param = self._name_maps[key][username]
+        return user_param[KEY_VOICE], user_param[KEY_SPEED], user_param[KEY_PITCH], user_param[KEY_INTONATION]
+
     def save(self, key=KEY_TWITCH):
         # Save corresponding JSON file
         self._save_json(self._name_maps[key], self._json_filenames[key])

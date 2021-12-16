@@ -19,6 +19,7 @@ class TwitchChat(commands.Bot):
                 'pitch': self._voice_pitch,
                 'speed': self._voice_speed,
                 'inton': self._voice_inton,
+                'show': self._voice_show,
                 }
 
     async def event_ready(self):
@@ -69,7 +70,7 @@ class TwitchChat(commands.Bot):
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await ctx.send(VOICE_LS.format(voices=sep.join(voices)))
+        await ctx.send(VOICE_LS.format(username=ctx.author.name, voices=sep.join(voices)))
 
     async def _voice_change(self, ctx: commands.Context, args):
         if not args:
@@ -149,3 +150,11 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_INTON_SUCCESS.format(username=ctx.author.name, inton=inton))
         else:
             await ctx.send(VOICE_INTON_FAIL.format(username=ctx.author.name))
+
+    async def _voice_show(self, ctx: commands.Context, args):
+        try:
+            voice_key, speed, pitch, inton = self.seika.get_params(ctx.author.name)
+            await ctx.send(VOICE_SHOW.format(username=ctx.author.name, voice_key=voice_key, 
+                speed=speed, pitch=pitch, inton=inton))
+        except KeyError:
+            await ctx.send(VOICE_SHOW_FAIL.format(username=ctx.author.name))

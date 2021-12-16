@@ -1,7 +1,7 @@
 KEY_TWITCH = 'twitch'
 KEY_YOUTUBE = 'yt'
 VOICE_SUB = 'Usage: {prefix}voice [{keys}]'
-VOICE_LS = 'Voices: {voices}'
+VOICE_LS = '{username} Voices: {voices}'
 
 VOICE_CHANGE_USAGE = 'Usage: {prefix}voice change <voice> <opt:speed> <opt:pitch> <opt:intonation>'
 VOICE_CHANGE_CHECK = 'Check {prefix}voice ls to see a list of voices'
@@ -22,3 +22,6 @@ VOICE_INTON_USAGE = 'Usage: {prefix}voice inton <inton>'
 VOICE_INTON_NAN = '{username} Intonation value is not a number'
 VOICE_INTON_SUCCESS = '{username} Voice intonation changed to {inton}'
 VOICE_INTON_FAIL = '{username} Voice intonation must be between 0.0 and 2.0'
+
+VOICE_SHOW = '{username} Voice: {voice_key}, Speed: {speed}, Pitch: {pitch}, Intonation: {inton}'
+VOICE_SHOW_FAIL = '{username} You have no custom voice settings'
