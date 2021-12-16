@@ -1,6 +1,6 @@
 KEY_TWITCH = 'twitch'
 KEY_YOUTUBE = 'yt'
-VOICE_SUB = 'Subcommands: {keys}'
+VOICE_SUB = 'Usage: {prefix}voice [{keys}]'
 VOICE_LS = 'Voices: {voices}'
 
 VOICE_CHANGE_USAGE = 'Usage: {prefix}voice change <voice> <opt:speed> <opt:pitch> <opt:intonation>'

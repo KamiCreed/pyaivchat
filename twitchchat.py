@@ -57,7 +57,7 @@ class TwitchChat(commands.Bot):
         if not args:
             sep = ', '
             # List subcommands
-            await ctx.send(VOICE_SUB.format(keys=sep.join(list(self.voice_sub.keys()))))
+            await ctx.send(VOICE_SUB.format(prefix=ctx.prefix, keys=sep.join(list(self.voice_sub.keys()))))
             return
 
         subcmd = args.pop(0)
