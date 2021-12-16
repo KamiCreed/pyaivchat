@@ -6,12 +6,12 @@ from consts import *
 
 class TwitchChat(commands.Bot):
 
-    def __init__(self, token, prefix, initial_channels):
+    def __init__(self, token, prefix, initial_channels, tts_queue):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         super().__init__(token=token, prefix=prefix, initial_channels=initial_channels)
 
         self.prefix = prefix
-        self.seika = SeikaPick()
+        self.seika = SeikaPick(tts_queue)
 
         self.voice_sub = {
                 'ls': self._voice_ls,

@@ -19,13 +19,14 @@ class YtChat:
             secret_file,
             vid_id,
             prefix,
+            tts_queue,
             loop: asyncio.AbstractEventLoop = None,
             ):
         self._ytauth = YtAuth(secret_file, vid_id)
         self._vid_id = vid_id
 
         self.prefix = prefix
-        self.seika = SeikaPick(KEY_YOUTUBE)
+        self.seika = SeikaPick(tts_queue, key=KEY_YOUTUBE)
 
         self._cmds = {
                 'voice': self.voice

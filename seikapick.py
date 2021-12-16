@@ -1,4 +1,3 @@
-import subprocess
 import json
 import os
 from random import Random
@@ -12,7 +11,8 @@ KEY_PITCH = 'pitch'
 KEY_INTONATION = 'intonation'
 
 class SeikaPick:
-    def __init__(self, key=KEY_TWITCH):
+    def __init__(self, tts_queue, key=KEY_TWITCH):
+        self._tts_queue = tts_queue
         self.key = key
 
         self._voice_id_map = {
@@ -50,7 +50,7 @@ class SeikaPick:
 
     @staticmethod
     def _say(voice_id, speed, pitch, intonation, msg):
-        subprocess.run(['SeikaSay2', '-cid', str(voice_id), '-speed', str(speed), '-pitch', str(pitch), 
+        self._tts_queue.put(['SeikaSay2', '-cid', str(voice_id), '-speed', str(speed), '-pitch', str(pitch), 
           '-intonation', str(intonation), '-t', msg])
 
     def say_for_user(self, username, msg):
