@@ -59,6 +59,9 @@ generate a client secret, exporting it as a file and place it in this directory 
 
 # Running
 
+Open up A.I. Voice editor (Or your TTS progam) and setup AssistantSeika
+(They must both be running for the bot to work).
+
 Use pipenv to run this program:
 
 ```
@@ -66,3 +69,10 @@ pipenv run python pyaivchat.py
 ```
 
 The program will prompt you to generate an OAuth2 token from your bot account on your browser. Do so and YouTube should be integrated as well.
+
+# Troubleshooting
+
+This is not for this program persay but if you also bought the Kotonoha English voices, you
+may have to download a trial version of one of the other voices in order for
+AssistantSeika to recognize them. This may be due to missing JP packages that the English
+install doesn't include, which the AssistantSeika developer may not have accounted for.
