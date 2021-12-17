@@ -1,5 +1,5 @@
 # pyaivchat
-SeikaSay Twitch and YouTube TTS and chatbot. Runs both Twitch and YouTube bots in
+SeikaSay2 Twitch and YouTube TTS and chatbot. Runs both Twitch and YouTube bots in
 parallel but sends the TTS commands sequentially.
 
 Using Python 3.8
