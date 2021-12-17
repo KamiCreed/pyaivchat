@@ -18,7 +18,7 @@ environment **PATH** variable.
 # Installation
 
 Since the above programs are basically Windows only, please install Anaconda. 
-After installing Anaconda, open up Anaconda Prompt and create an environment and install pipenv:
+After installing Anaconda, open up Anaconda Prompt, create an environment, and install pipenv:
 ```
 conda create --name pyaivchat
 conda activate pyaivchat
