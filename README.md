@@ -8,7 +8,7 @@ Using Python 3.8
 Requires installing [AssistantSeika](https://hgotoh.jp/wiki/doku.php/documents/voiceroid/assistantseika/assistantseika-001a)
 and using the included SeikaSay2 for AI Voice JP integration.
 
-This was mainly made for the author's [A.I. Voice JP Kotonoha sister's English](https://aivoice.jp/kotonoha/en/)
+This was mainly made for the author's purchased [A.I. Voice JP Kotonoha sister's English](https://aivoice.jp/kotonoha/en/)
 TTS program, but since AssistantSeika works for VOICEROID(2), CeVIO, AITalk3, etc., this should also work for them
 as long as you set up your AssistantSeika properly.
 
