@@ -73,6 +73,6 @@ The program will prompt you to generate an OAuth2 token from your bot account on
 # Troubleshooting
 
 This is not for this program persay but if you also bought the Kotonoha English voices, you
-may have to download a trial version of one of the other voices in order for
+may have to install a trial version of one of the other voices in order for
 AssistantSeika to recognize them. This may be due to missing JP packages that the English
 install doesn't include, which the AssistantSeika developer may not have accounted for.
