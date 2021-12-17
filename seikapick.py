@@ -15,6 +15,7 @@ class SeikaPick:
         self._tts_queue = tts_queue
         self.key = key
 
+        # TODO: Get IDs from SeikaSay2
         self._voice_id_map = {
                 'k_aoi': '5219',
                 'k_akane': '5218',
@@ -51,6 +52,10 @@ class SeikaPick:
     def _say(self, voice_id, speed, pitch, intonation, msg):
         self._tts_queue.put(['SeikaSay2', '-cid', str(voice_id), '-speed', str(speed), '-pitch', str(pitch), 
           '-intonation', str(intonation), '-t', msg])
+
+    # TODO: Let users make their own voice presets
+    def say_with_voice(self, username, voice_key, msg):
+            voice_id = self._voice_id_map[voice_key]
 
     def say_for_user(self, username, msg):
         if username not in self._name_maps[self.key]:
