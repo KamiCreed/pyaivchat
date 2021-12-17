@@ -12,6 +12,10 @@ Use pipenv to install packages:
 pipenv install
 ```
 
+Create a new Twitch bot account and get a token from [TwitchIO](https://github.com/TwitchIO/TwitchIO) to integrate Twitch.
+
+Create a new brand YouTube channel and sign into it.
+
 Create a `.env` file with the following:
 
 ```
@@ -32,3 +36,5 @@ Use pipenv to run this program:
 ```
 pipenv run python pyaivchat.py
 ```
+
+The program will prompt you to generate an OAuth2 token from your bot account on your browser. Do so and YouTube should be integrated as well.
