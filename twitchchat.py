@@ -100,7 +100,7 @@ class TwitchChat(commands.Bot):
         except ValueError:
             await ctx.send(VOICE_SPEED_NAN.format(username=ctx.author.name))
 
-        success = self.seika.pick_speed(speed)
+        success = self.seika.pick_speed(ctx.author.name, speed)
         if success:
             await ctx.send(VOICE_SPEED_SUCCESS.format(username=ctx.author.name, speed=speed))
         else:
@@ -122,7 +122,7 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_PITCH_NAN.format(username=ctx.author.name))
             return
 
-        success = self.seika.pick_pitch(pitch)
+        success = self.seika.pick_pitch(ctx.author.name, pitch)
         if success:
             await ctx.send(VOICE_PITCH_SUCCESS.format(username=ctx.author.name, pitch=pitch))
         else:
@@ -144,7 +144,7 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_INTON_NAN.format(username=ctx.author.name))
             return
 
-        success = self.seika.pick_intonation(inton)
+        success = self.seika.pick_intonation(ctx.author.name, inton)
         if success:
             self.seika.save()
             await ctx.send(VOICE_INTON_SUCCESS.format(username=ctx.author.name, inton=inton))
