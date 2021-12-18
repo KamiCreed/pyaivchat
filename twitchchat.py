@@ -116,13 +116,10 @@ class TwitchChat(commands.Bot):
         else:
             self.seika.save()
 
-    async def _voice_pitch(self, ctx: commands.Context, args, standalone=True):
+    async def _voice_pitch(self, ctx: commands.Context, args):
         if not args:
             await ctx.send(VOICE_PITCH_USAGE.format(prefix=ctx.prefix))
             return
-
-        if standalone:
-            args.pop(0) # Pop the subcommand
 
         try:
             pitch = float(args.pop(0))
