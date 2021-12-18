@@ -117,7 +117,7 @@ class TwitchChat(commands.Bot):
             return
 
         try:
-            pitch = int(args.pop(0))
+            pitch = float(args.pop(0))
         except ValueError:
             await ctx.send(VOICE_PITCH_NAN.format(username=ctx.author.name))
             return
@@ -139,7 +139,7 @@ class TwitchChat(commands.Bot):
             return
 
         try:
-            inton = int(args.pop(0))
+            inton = float(args.pop(0))
         except ValueError:
             await ctx.send(VOICE_INTON_NAN.format(username=ctx.author.name))
             return
