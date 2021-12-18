@@ -103,14 +103,14 @@ class SeikaPick:
         if pitch > 2 or pitch < 0.5:
             return False
         self._give_voice_if_needed(username)
-        self._name_maps[self.key][username][KEY_PITCH] = speed
+        self._name_maps[self.key][username][KEY_PITCH] = pitch
         return True
 
     def pick_intonation(self, username, intonation):
         if intonation > 2 or intonation < 0:
             return False
         self._give_voice_if_needed(username)
-        self._name_maps[self.key][username][KEY_INTONATION] = speed
+        self._name_maps[self.key][username][KEY_INTONATION] = intonation
         return True
 
     def get_params(self, username):
