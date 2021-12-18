@@ -1,6 +1,7 @@
 /client_secret.json
 /token.pickle
 /venv*
+/*name_map.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
