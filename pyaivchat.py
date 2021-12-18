@@ -8,6 +8,7 @@ from ytchat import YtChat
 from twitchchat import TwitchChat
 
 def start_yt(prefix, vid_id, tts_queue):
+    # TODO: Search for YouTube events and allow user to pick
     ytchat = YtChat(secret_file="client_secret.json", 
             vid_id=vid_id, prefix=prefix,
             tts_queue=tts_queue)
