@@ -87,17 +87,14 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_CHANGE_FAIL.format(username=ctx.author.name, prefix=ctx.prefix))
 
         if args:
-            await self._voice_speed(ctx, args, standalone=False)
+            await self._voice_speed(ctx, args)
         else:
             self.seika.save()
 
-    async def _voice_speed(self, ctx: commands.Context, args, standalone=True):
+    async def _voice_speed(self, ctx: commands.Context, args):
         if not args:
             await ctx.send(VOICE_SPEED_USAGE.format(prefix=ctx.prefix))
             return
-
-        if standalone:
-            args.pop(0) # Pop the subcommand
 
         try:
             speed = float(args.pop(0))
@@ -112,7 +109,7 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_SPEED_FAIL.format(username=ctx.author.name))
 
         if args:
-            await self._voice_speed(ctx, args, standalone=False)
+            await self._voice_speed(ctx, args)
         else:
             self.seika.save()
 
@@ -135,17 +132,14 @@ class TwitchChat(commands.Bot):
             await ctx.send(VOICE_PITCH_FAIL.format(username=ctx.author.name))
 
         if args:
-            await self._voice_inton(ctx, args, standalone=False)
+            await self._voice_inton(ctx, args)
         else:
             self.seika.save()
 
-    async def _voice_inton(self, ctx: commands.Context, args, standalone=True):
+    async def _voice_inton(self, ctx: commands.Context, args):
         if not args:
             await ctx.send(VOICE_INTON_USAGE.format(prefix=ctx.prefix))
             return
-
-        if standalone:
-            args.pop(0) # Pop the subcommand
 
         try:
             inton = float(args.pop(0))

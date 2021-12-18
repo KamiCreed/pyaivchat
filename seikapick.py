@@ -95,21 +95,21 @@ class SeikaPick:
     def pick_speed(self, username, speed):
         if speed > 4 or speed < 0.5:
             return False
-        self._give_voice_if_needed(username, self.key)
+        self._give_voice_if_needed(username)
         self._name_maps[self.key][username][KEY_SPEED] = speed
         return True
 
     def pick_pitch(self, username, pitch):
         if pitch > 2 or pitch < 0.5:
             return False
-        self._give_voice_if_needed(username, self.key)
+        self._give_voice_if_needed(username)
         self._name_maps[self.key][username][KEY_PITCH] = speed
         return True
 
     def pick_intonation(self, username, intonation):
         if intonation > 2 or intonation < 0:
             return False
-        self._give_voice_if_needed(username, self.key)
+        self._give_voice_if_needed(username)
         self._name_maps[self.key][username][KEY_INTONATION] = speed
         return True
 
