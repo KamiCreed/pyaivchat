@@ -24,7 +24,7 @@ class SeikaPick:
 
         # Default params
         self._speed = 1.2
-        self._pitch = 1.1
+        self._pitch = 1.4
         self._intonation = 1.0
 
 
