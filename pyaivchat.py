@@ -4,13 +4,17 @@ from multiprocessing import Lock, Process, Queue
 import subprocess
 import traceback
 
+from ytauth import YtAuth
 from ytchat import YtChat
 from twitchchat import TwitchChat
 
-def start_yt(prefix, vid_id, tts_queue):
+SECRET_FILE = 'client_secret.json'
+
+def start_yt(prefix, vid_id, tts_queue, ytauth):
     # TODO: Search for YouTube events and allow user to pick
-    ytchat = YtChat(secret_file="client_secret.json", 
+    ytchat = YtChat(secret_file=SECRET_FILE,
             vid_id=vid_id, prefix=prefix,
+            ytauth=ytauth,
             tts_queue=tts_queue)
     ytchat.run()
 
@@ -43,7 +47,8 @@ def main():
 
     tts_queue = Queue()
     
-    p_yt = Process(target=start_yt, args=(prefix, vid_id, tts_queue))
+    auth = YtAuth(SECRET_FILE, vid_id)
+    p_yt = Process(target=start_yt, args=(prefix, vid_id, tts_queue, auth))
     p_tw = Process(target=start_twitch, args=(prefix, tts_queue))
     p_yt.start()
     p_tw.start()

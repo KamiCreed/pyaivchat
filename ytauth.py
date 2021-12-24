@@ -8,10 +8,6 @@ import pickle
 
 class YtAuth:
     def __init__(self, secret_file, vid_id):
-        # Disable OAuthlib's HTTPS verification when running locally.
-        # *DO NOT* leave this option enabled in production.
-        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
         self.scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
         api_service_name = "youtube"
         api_version = "v3"

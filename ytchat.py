@@ -3,7 +3,6 @@ import pytchat
 import logging
 import traceback
 
-from ytauth import YtAuth
 from seikapick import SeikaPick
 from consts import *
 
@@ -20,9 +19,10 @@ class YtChat:
             vid_id,
             prefix,
             tts_queue,
+            ytauth,
             loop: asyncio.AbstractEventLoop = None,
             ):
-        self._ytauth = YtAuth(secret_file, vid_id)
+        self._ytauth = ytauth
         self._vid_id = vid_id
 
         self.prefix = prefix
