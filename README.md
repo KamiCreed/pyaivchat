@@ -75,4 +75,5 @@ The program will prompt you to generate an OAuth2 token from your bot account on
 This is not for this program persay but if you also bought the A.I. VOICE Kotonoha English voices, you
 may have to install a trial version of one of the other voices [on their site](https://aivoice.jp/member/downloads/trial) in order for
 AssistantSeika to recognize them. This may be due to missing JP packages that the English
-install doesn't include, which the AssistantSeika developer may not have accounted for.
+install doesn't include, which the AssistantSeika developer may not have accounted for. Installing one or the other first
+shouldn't really matter, but I did install the JP trial after I installed the English version.
