@@ -7,22 +7,39 @@ from google.auth.transport.requests import Request
 import pickle
 
 class YtAuth:
-    def __init__(self, secret_file, vid_id):
+    vid_id = ''
+
+    def __init__(self, secret_file, channel_id, event_type):
         self.scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
         api_service_name = "youtube"
         api_version = "v3"
         self.client_secrets_file = secret_file
-        self.vid_id = vid_id
+        self.channel_id = channel_id
+        self.event_type = event_type
 
         credentials = self.google_auth()
         self.youtube = googleapiclient.discovery.build(
-            api_service_name, api_version, credentials=credentials)
+            api_service_name, api_version, credentials=credentials, cache_discovery=False)
+
+        self.vid_id = self.get_vidid()
 
         self.chatid = self.get_chatid()
         print("Ready.")
 
+    def get_vidid(self):
+        request = self.youtube.search().list(
+            part="snippet",
+            channelId=self.channel_id,
+            eventType=event_type,
+            maxResults=1,
+            order="date",
+            type="video"
+        )
+        return request.execute()['items'][0]['id']['videoId']
+
     def get_chatid(self):
         print("Getting Chat ID")
+
         request = self.youtube.videos().list(
             part="liveStreamingDetails",
             id=self.vid_id

@@ -10,10 +10,10 @@ from twitchchat import TwitchChat
 
 SECRET_FILE = 'client_secret.json'
 
-def start_yt(prefix, vid_id, tts_queue, ytauth):
+def start_yt(prefix, tts_queue, ytauth):
     # TODO: Search for YouTube events and allow user to pick
     ytchat = YtChat(secret_file=SECRET_FILE,
-            vid_id=vid_id, prefix=prefix,
+            vid_id=ytauth.vid_id, prefix=prefix,
             ytauth=ytauth,
             tts_queue=tts_queue)
     ytchat.run()
@@ -39,7 +39,8 @@ def send_say_requests(tts_queue):
 
 def main():
     prefix = os.environ['BOT_PREFIX']
-    vid_id = os.environ['VID_ID']
+    channel_id = os.environ['CHANNEL_ID']
+    event_type = os.environ['EVENT_TYPE']
 
     #parser = argparse.ArgumentParser(description='Twitch or YouTube chatbot and SeikaSay TTS')
     #parser.add_argument('--yt', action='store_true', help='Run YouTube chatbot instead of Twitch')
@@ -47,8 +48,8 @@ def main():
 
     tts_queue = Queue()
     
-    auth = YtAuth(SECRET_FILE, vid_id)
-    p_yt = Process(target=start_yt, args=(prefix, vid_id, tts_queue, auth))
+    auth = YtAuth(SECRET_FILE, channel_id, event_type)
+    p_yt = Process(target=start_yt, args=(prefix, tts_queue, auth))
     p_tw = Process(target=start_twitch, args=(prefix, tts_queue))
     p_yt.start()
     p_tw.start()

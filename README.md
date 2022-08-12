@@ -51,16 +51,21 @@ BOT_PREFIX=!
 CHANNEL=<channel_name>
 
 # YouTube
-VID_ID=<stream/vid_id>
+CHANNEL_ID=<channel_id>
+EVENT_TYPE=<live/upcoming>
 ```
+
+EVENT\_TYPE can be either `live` or `upcoming` depending on whether you started this bot while you are streaming
+or simply created a YouTube event in anticipation. `upcoming` only looks for the most recent published
+livestream event.
 
 Log in to Google Cloud Developer console and enable the YouTube API and 
 generate a client secret, exporting it as a file and place it in this directory named `client_secret.json`.
 
 # Running
 
-Open up A.I. Voice editor (Or your TTS progam) and setup AssistantSeika
-(They must both be running for the bot to work).
+Open up A.I. Voice editor (Or a supported TTS progam) and setup AssistantSeika (They must both be running for
+this bot to work).
 
 Use pipenv to run this program:
 
@@ -68,7 +73,13 @@ Use pipenv to run this program:
 pipenv run python pyaivchat.py
 ```
 
-The program will prompt you to generate an OAuth2 token from your bot account on your browser. Do so and YouTube should be integrated as well.
+The program will prompt you to generate an OAuth2 token from your bot account on your browser. Do so and
+YouTube should be integrated as well.
+
+The chat commands are as follows:
+```
+<prefix>voice
+```
 
 # Troubleshooting
 
