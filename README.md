@@ -17,7 +17,9 @@ environment **PATH** variable.
 
 # Installation
 
-Since the above programs are basically Windows only, please install Anaconda. 
+Since the above programs are basically Windows only, please install
+[Anaconda](https://www.anaconda.com/download/) or
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html). 
 After installing Anaconda, open up Anaconda Prompt, create an environment, and install pipenv:
 ```
 conda create --name pyaivchat
@@ -55,9 +57,9 @@ CHANNEL_ID=<channel_id>
 EVENT_TYPE=<live/upcoming>
 ```
 
-EVENT\_TYPE can be either `live` or `upcoming` depending on whether you started this bot while you are streaming
-or simply created a YouTube event in anticipation. `upcoming` only looks for the most recent published
-livestream event.
+EVENT\_TYPE can be either `live` or `upcoming` depending on whether you started this bot while you are
+streaming or simply created a YouTube event in anticipation. `upcoming` only looks for the most recent
+publicly published livestream event.
 
 Log in to Google Cloud Developer console and enable the YouTube API and 
 generate a client secret, exporting it as a file and place it in this directory named `client_secret.json`.
