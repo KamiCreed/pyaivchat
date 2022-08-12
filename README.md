@@ -20,16 +20,15 @@ environment **PATH** variable.
 Since the above programs are basically Windows only, please install a python environment such as
 [Anaconda](https://www.anaconda.com/download/) or
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html). 
-After installing Anaconda, open up Anaconda Prompt, create an environment, and install pipenv:
+After installing `conda`, open up \<Ana/Mini\>conda Prompt, create an environment, and install pipenv:
 ```
-conda create --name pyaivchat
+conda create --name pyaivchat python=3.8 pipenv
 conda activate pyaivchat
-conda install -c conda-forge pipenv
 ```
 
-Might as well also install specifically Python 3.8 with conda:
+For a simple python environment just install `pipenv`:
 ```
-conda install python=3.8
+pip install pipenv
 ```
 
 Navigate to this folder and use pipenv to install packages:
