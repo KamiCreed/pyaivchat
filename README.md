@@ -86,6 +86,9 @@ The chat commands are as follows:
 
 # Troubleshooting
 
+If the YouTube bot stopped working when trying to run it after a while, you may need to refresh the token.
+Delete `token.pickle` and re-run the python script.
+
 This is not for this program persay but if you also bought the A.I. VOICE Kotonoha English voices, you may
 have to install a _trial_ version of one of the JP voices [on their
 site](https://aivoice.jp/member/downloads/trial) in order for AssistantSeika to recognize them. This may be
