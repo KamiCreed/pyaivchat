@@ -47,6 +47,7 @@ Create a `.env` file with the following:
 
 ```
 # .env
+# Twitch
 TOKEN=<twitch_token from twitchio>
 BOT_PREFIX=!
 CHANNEL=<channel_name>
@@ -56,12 +57,13 @@ CHANNEL_ID=<channel_id>
 EVENT_TYPE=<live/upcoming>
 ```
 
-EVENT\_TYPE can be either `live` or `upcoming` depending on whether you started this bot while you are
+EVENT\_TYPE can be either be `live` or `upcoming` depending on whether you ran this bot while you are
 streaming or simply created a YouTube event in anticipation. `upcoming` only looks for the most recent
-publicly published livestream event.
+_publicly_ published livestream event.
 
-Log in to Google Cloud Developer console and enable the YouTube API and 
-generate a client secret, exporting it as a file and place it in this directory named `client_secret.json`.
+Log in to Google Cloud Developer console and enable the YouTube API and [generate a client
+secret](https://developers.google.com/youtube/registering_an_application), exporting it as a file and place it
+in this directory named `client_secret.json`.
 
 # Running
 
@@ -75,7 +77,7 @@ pipenv run python pyaivchat.py
 ```
 
 The program will prompt you to generate an OAuth2 token from your bot account on your browser. Do so and
-YouTube should be integrated as well.
+YouTube should be properly integrated.
 
 The chat commands are as follows:
 ```
