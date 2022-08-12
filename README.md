@@ -17,7 +17,7 @@ environment **PATH** variable.
 
 # Installation
 
-Since the above programs are basically Windows only, please install
+Since the above programs are basically Windows only, please install a python environment such as
 [Anaconda](https://www.anaconda.com/download/) or
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html). 
 After installing Anaconda, open up Anaconda Prompt, create an environment, and install pipenv:
