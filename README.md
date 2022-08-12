@@ -13,7 +13,7 @@ TTS program, but since AssistantSeika works for VOICEROID(2), CeVIO, AITalk3, et
 as long as you set up your AssistantSeika properly.
 
 Make sure that wherever you extracted SeikaSay2.exe that you add the folder to your
-environment **PATH** variable.
+environment `PATH` variable.
 
 # Installation
 
