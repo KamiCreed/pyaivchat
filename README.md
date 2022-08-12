@@ -57,7 +57,7 @@ CHANNEL_ID=<channel_id>
 EVENT_TYPE=<live/upcoming>
 ```
 
-EVENT\_TYPE can be either be `live` or `upcoming` depending on whether you ran this bot while you are
+EVENT\_TYPE can either be `live` or `upcoming` depending on whether you ran this bot while you are
 streaming or simply created a YouTube event in anticipation. `upcoming` only looks for the most recent
 _publicly_ published livestream event.
 
