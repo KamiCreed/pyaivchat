@@ -49,21 +49,22 @@ def main():
 
     tts_queue = Queue()
     
-    auth = YtAuth(SECRET_FILE, channel_id, event_type)
-    p_yt = Process(target=start_yt, args=(prefix, tts_queue, auth))
-    p_tw = Process(target=start_twitch, args=(prefix, tts_queue))
-    p_yt.start()
-    p_tw.start()
+    if not args.no_yt:
+        auth = YtAuth(SECRET_FILE, channel_id, event_type)
+        p_yt = Process(target=start_yt, args=(prefix, tts_queue, auth))
+        p_yt.start()
+
+    if not args.no_tw:
+        p_tw = Process(target=start_twitch, args=(prefix, tts_queue))
+        p_tw.start()
 
     # Send TTS requests
     send_say_requests(tts_queue)
 
-    p_yt.join()
-    p_tw.join()
-    #if args.yt:
-    #    start_yt(prefix, vid_id)
-    #else:
-    #    start_twitch(prefix)
+    if not args.no_yt:
+        p_yt.join()
+    if not args.no_tw:
+        p_tw.join()
 
     print("End.")
 
