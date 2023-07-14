@@ -42,9 +42,10 @@ def main():
     channel_id = os.environ['CHANNEL_ID']
     event_type = os.environ['EVENT_TYPE']
 
-    #parser = argparse.ArgumentParser(description='Twitch or YouTube chatbot and SeikaSay TTS')
-    #parser.add_argument('--yt', action='store_true', help='Run YouTube chatbot instead of Twitch')
-    #args = parser.parse_args()
+    parser = argparse.ArgumentParser(description='Twitch and YouTube chatbot using SeikaSay TTS')
+    parser.add_argument('--no-yt', action='store_true', help='Disable YouTube bot')
+    parser.add_argument('--no-tw', action='store_true', help='Disable Twitch bot')
+    args = parser.parse_args()
 
     tts_queue = Queue()
     

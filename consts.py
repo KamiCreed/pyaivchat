@@ -26,3 +26,18 @@ VOICE_INTON_FAIL = '{username} Voice intonation must be between 0.0 and 2.0'
 
 VOICE_SHOW = '{username} Voice: {voice_key}, Speed: {speed}, Pitch: {pitch}, Intonation: {inton}'
 VOICE_SHOW_FAIL = '{username} You have no custom voice settings'
+
+# TODO: Get IDs from SeikaSay2
+VOICE_ID_MAP_EN = {
+        'k_aoi': '5219',
+        'k_akane': '5218',
+        }
+
+VOICE_ID_MAP_JP = {
+        'zunda_norm': '7006',
+        'zunda_ama': '7005',
+        'zunda_sexy': '7007',
+        'zunda_tsun': '7008',
+        'mochiko': '7042',
+        'tsumugi': '7009',
+        }

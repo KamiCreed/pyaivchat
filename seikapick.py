@@ -2,6 +2,7 @@ import json
 import os
 from random import Random
 import copy
+import re
 
 from consts import *
 
@@ -10,21 +11,18 @@ KEY_SPEED = 'speed'
 KEY_PITCH = 'pitch'
 KEY_INTONATION = 'intonation'
 
+REGEX_JP_CHARAS = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]")
+
 class SeikaPick:
     def __init__(self, tts_queue, key=KEY_TWITCH):
         self._tts_queue = tts_queue
         self.key = key
-
-        # TODO: Get IDs from SeikaSay2
-        self._voice_id_map = {
-                'k_aoi': '5219',
-                'k_akane': '5218',
-                #'yukari': '5207',
-                }
+        self._voice_id_map = VOICE_ID_MAP_EN
+        self._voice_id_map_jp = VOICE_ID_MAP_JP
 
         # Default params
         self._speed = 1.0
-        self._pitch = 1.3
+        self._pitch = 1.0
         self._intonation = 1.0
 
 
@@ -58,26 +56,40 @@ class SeikaPick:
             voice_id = self._voice_id_map[voice_key]
 
     def say_for_user(self, username, msg):
-        if username not in self._name_maps[self.key]:
+        matches = REGEX_JP_CHARAS.findall(msg)
+
+        # Use JP voice if mostly JP text
+        is_jp_text = len(matches) / len(msg) > 0.55
+        if is_jp_text:
+            voice_map = self._voice_id_map_jp
+        else:
+            voice_map = self._voice_id_map
+
+        # TODO: Add JP voices as a seperate entity to EN in the dictionary
+        if is_jp_text or username not in self._name_maps[self.key]:
             print("Using username as seed to choose a voice...")
-            voice_key = self._pick_rand_voice(username)
+            voice_key = self._pick_rand_voice(username, voice_map)
             print("Voice chosen: ", voice_key)
-            voice_id = self._voice_id_map[voice_key]
+            voice_id = voice_map[voice_key]
             speed = self._speed
             pitch = self._pitch
             intonation = self._intonation
         else:
             user_params = self._name_maps[self.key][username]
-            voice_id = self._voice_id_map[self._name_maps[self.key][username][KEY_VOICE]]
+            voice_id = voice_map[self._name_maps[self.key][username][KEY_VOICE]]
             speed = user_params[KEY_SPEED] if KEY_SPEED in user_params else self._speed
             pitch = user_params[KEY_PITCH] if KEY_PITCH in user_params else self._pitch
             intonation = user_params[KEY_INTONATION] if KEY_INTONATION in user_params else self._intonation
 
-        self._say(voice_id, speed, pitch, intonation, msg)
+        if is_jp_text:
+            # TODO: Normalize pitch from between -0.15 to 0.15 for VOICEVOX
+            self._say(voice_id, speed, 0, intonation, msg)
+        else:
+            self._say(voice_id, speed, pitch, intonation, msg)
 
-    def _pick_rand_voice(self, username):
+    def _pick_rand_voice(self, username, voice_map=VOICE_ID_MAP_EN):
         self.user_rand.seed(username) # Pick random voice, but be the same for their user
-        voice_key = self.user_rand.choice(list(self._voice_id_map.keys()))
+        voice_key = self.user_rand.choice(list(voice_map.keys()))
         return voice_key
 
     def pick_voice(self, username, voice_key):

@@ -30,7 +30,7 @@ class YtAuth:
         request = self.youtube.search().list(
             part="snippet",
             channelId=self.channel_id,
-            eventType=event_type,
+            eventType=self.event_type,
             maxResults=1,
             order="date",
             type="video"
