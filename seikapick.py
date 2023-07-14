@@ -12,6 +12,7 @@ KEY_PITCH = 'pitch'
 KEY_INTONATION = 'intonation'
 
 REGEX_JP_CHARAS = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]")
+CHECK_RATIO = False
 
 class SeikaPick:
     def __init__(self, tts_queue, key=KEY_TWITCH):
@@ -56,10 +57,14 @@ class SeikaPick:
             voice_id = self._voice_id_map[voice_key]
 
     def say_for_user(self, username, msg):
-        matches = REGEX_JP_CHARAS.findall(msg)
+        if CHECK_RATIO:
+            # Use JP voice if mostly JP text
+            matches = REGEX_JP_CHARAS.findall(msg)
+            is_jp_text = len(matches) / len(msg) > 0.55
+        else:
+            # Use JP voice if first character is JP
+            is_jp_text = REGEX_JP_CHARAS.match(msg[0])
 
-        # Use JP voice if mostly JP text
-        is_jp_text = len(matches) / len(msg) > 0.55
         if is_jp_text:
             voice_map = self._voice_id_map_jp
         else:
