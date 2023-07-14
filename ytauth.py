@@ -17,9 +17,16 @@ class YtAuth:
         self.channel_id = channel_id
         self.event_type = event_type
 
-        credentials = self.google_auth()
-        self.youtube = googleapiclient.discovery.build(
-            api_service_name, api_version, credentials=credentials, cache_discovery=False)
+        def load(credentials):
+             return googleapiclient.discovery.build(
+                api_service_name, api_version, credentials=credentials, cache_discovery=False)
+        try:
+            credentials = self.google_auth()
+            self.youtube = load(credentials)
+        except:
+            # Fetch credentials if it fails
+            credentials = self.google_auth(True)
+            self.youtube = load(credentials)
 
         self.vid_id = self.get_vidid()
 
@@ -49,10 +56,10 @@ class YtAuth:
         return response['items'][0]['liveStreamingDetails']['activeLiveChatId']
 
 
-    def google_auth(self):
+    def google_auth(self, fetch=False):
         credentials = None
         # token.pickle stores the user's credentials from previously successful logins
-        if os.path.exists('token.pickle'):
+        if not fetch and os.path.exists('token.pickle'):
             print('Loading Credentials From File...')
             with open('token.pickle', 'rb') as token:
                 credentials = pickle.load(token)
