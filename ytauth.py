@@ -74,7 +74,7 @@ class YtAuth:
 
                 flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
                     self.client_secrets_file, self.scopes)
-                credentials = flow.run_console()
+                credentials = flow.run_local_server(port=0)
                 with open("token.pickle", "wb") as f:
                     print("Saving Credentials for Future Use...")
                     pickle.dump(credentials, f)
