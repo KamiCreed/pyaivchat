@@ -1,4 +1,5 @@
 import os
+import time
 
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -8,6 +9,8 @@ import pickle
 
 class YtAuth:
     vid_id = ''
+    MAX_WAIT_SEC = 180
+    WAIT_BASE = 2
 
     def __init__(self, secret_file, channel_id, event_type):
         self.scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -42,7 +45,21 @@ class YtAuth:
             order="date",
             type="video"
         )
-        return request.execute()['items'][0]['id']['videoId']
+        response = request.execute()
+
+        incidents = 0
+        while not response['items']:
+            wait_sec = self.WAIT_BASE**incidents
+
+            if wait_sec > self.MAX_WAIT_SEC:
+                # Oscillate waits
+                incidents = 0
+            print("Bad response. Waiting for", wait_sec, "seconds...")
+            time.sleep(wait_sec)
+            response = request.execute()
+            incidents += 1
+
+        return response['items'][0]['id']['videoId']
 
     def get_chatid(self):
         print("Getting Chat ID")
