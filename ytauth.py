@@ -50,14 +50,13 @@ class YtAuth:
         incidents = 0
         while not response['items']:
             wait_sec = self.WAIT_BASE**incidents
-
-            if wait_sec > self.MAX_WAIT_SEC:
-                # Oscillate waits
-                incidents = 0
             print("Bad response. Waiting for", wait_sec, "seconds...")
             time.sleep(wait_sec)
             response = request.execute()
             incidents += 1
+            if wait_sec > self.MAX_WAIT_SEC:
+                # Oscillate wait time
+                incidents = 0
 
         return response['items'][0]['id']['videoId']
 
