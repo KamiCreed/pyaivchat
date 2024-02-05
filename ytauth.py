@@ -9,7 +9,7 @@ import pickle
 
 class YtAuth:
     vid_id = ''
-    MAX_WAIT_SEC = 180
+    MAX_WAIT_SEC = 120
     WAIT_BASE = 2
 
     def __init__(self, secret_file, channel_id, event_type):
