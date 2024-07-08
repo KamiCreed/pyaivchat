@@ -29,15 +29,15 @@ VOICE_SHOW_FAIL = '{username} You have no custom voice settings'
 
 # TODO: Get IDs from SeikaSay2
 VOICE_ID_MAP_EN = {
-        'k_aoi': '5219',
-        'k_akane': '5218',
+        'k_aoi': '60013',
+        'k_akane': '60023',
         }
 
 VOICE_ID_MAP_JP = {
-        'zunda_norm': '7006',
-        'zunda_ama': '7005',
-        'zunda_sexy': '7007',
-        'zunda_tsun': '7008',
-        'mochiko': '7042',
-        'tsumugi': '7009',
+        'zunda_norm': '50022',
+        'zunda_ama': '50021',
+        'zunda_sexy': '50023',
+        'zunda_tsun': '50024',
+        'mochiko': '50111',
+        'tsumugi': '50031',
         }
