@@ -95,3 +95,7 @@ site](https://aivoice.jp/member/downloads/trial) in order for AssistantSeika to 
 due to missing JP packages that the English install doesn't include, which the AssistantSeika developer may
 not have accounted for. Installing one or the other first shouldn't really matter, but I did install the JP
 trial after I installed the English version.
+
+## Cannot Hear TTS
+It could be automatically piped into a weird audio cable as set in the "Basic settings" tab of AssisstantSeika.
+Check that tab to make sure your voice programs are outputting to the desired audio device.
