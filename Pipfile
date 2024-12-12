@@ -11,6 +11,3 @@ google-auth-oauthlib = "*"
 google-api-python-client = "*"
 
 [dev-packages]
-
-[requires]
-python_version = "3.8"

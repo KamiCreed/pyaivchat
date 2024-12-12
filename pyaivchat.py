@@ -16,7 +16,15 @@ def start_yt(prefix, tts_queue, ytauth):
             vid_id=ytauth.vid_id, prefix=prefix,
             ytauth=ytauth,
             tts_queue=tts_queue)
-    ytchat.run()
+
+    while True:
+        try:
+            ytchat.run()
+        except Exception as e:
+            print(e)
+            print("Error: YouTube bot crashed. Restarting...")
+
+        sleep(2)
 
 def start_twitch(prefix, tts_queue):
     bot = TwitchChat(
@@ -26,7 +34,15 @@ def start_twitch(prefix, tts_queue):
         tts_queue=tts_queue,
         initial_channels=[os.environ['CHANNEL']]
     )
-    bot.run()
+
+    while True:
+        try:
+            bot.run()
+        except Exception as e:
+            print(e)
+            print("Error: Twitch bot crashed. Restarting...")
+
+        sleep(2)
 
 def send_say_requests(tts_queue):
     while True:
