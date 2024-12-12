@@ -68,8 +68,8 @@ class YtAuth:
                 incidents = 0
 
         videoIds = []
-        for i in range(2):
-            videoIds.append(response['items'][i]['id']['videoId'])
+        for item in response['items']:
+            videoIds.append(item['id']['videoId'])
 
         return videoIds
 
