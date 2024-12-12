@@ -1,11 +1,15 @@
 from twitchio.ext import commands
 import subprocess
-from seikapick import SeikaPick
+import re
 import traceback
+
+from seikapick import SeikaPick
 
 from consts import *
 
 class TwitchChat(commands.Bot):
+    invalid_unicode_re = re.compile(u'[\U000e0000\U000e0002-\U000e001f]', re.UNICODE)
+    spam_filter_re = re.compile(SPAM_FILTER_RE, flags=re.I)
 
     def __init__(self, token, prefix, initial_channels, tts_queue):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
@@ -23,6 +27,9 @@ class TwitchChat(commands.Bot):
                 'show': self._voice_show,
                 }
 
+    def replace_invalid_unicode(self, text, replacement_char=u'\uFFFD'):
+        return self.invalid_unicode_re.sub(replacement_char, text)
+
     async def event_ready(self):
         # We are logged in and ready to chat and use commands...
         print(f'Logged in as | {self.nick}')
@@ -33,11 +40,14 @@ class TwitchChat(commands.Bot):
         if message.echo:
             return
 
+        filtered_content = self.spam_filter_re.sub(r'\2\6', message.content)
+
         # Print the contents of our message to console...
         print(message.author.name, message.content)
+        print(message.author.name, filtered_content)
 
         if not message.content.startswith(self.prefix) and not message.content.startswith('!'):
-            self.seika.say_for_user(message.author.name, message.content)
+            self.seika.say_for_user(message.author.name, filtered_content)
 
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
@@ -52,12 +62,14 @@ class TwitchChat(commands.Bot):
     async def voice(self, ctx: commands.Context):
         cmd = f"{ctx.prefix}voice"
 
-        args = ctx.message.content.split()
+        content = self.replace_invalid_unicode(ctx.message.content, '')
+        args = content.split()
         # Remove command
         args.pop(0)
 
         if not args:
             sep = ', '
+            print("Listing subcommands...")
             # List subcommands
             await ctx.send(VOICE_SUB.format(prefix=ctx.prefix, keys=sep.join(list(self.voice_sub.keys()))))
             return

@@ -14,6 +14,8 @@ logging.basicConfig(
 
 # TODO: Refactor with a super class
 class YtChat:
+    spam_filter_re = re.compile(SPAM_FILTER_RE, flags=re.I)
+
     def __init__(self, 
             secret_file,
             vid_id,
@@ -63,8 +65,10 @@ class YtChat:
         if ctx.author.name in self.bot_names:
             return
 
+        filtered_content = self.spam_filter_re.sub(r'\2\6', ctx.message)
+
         if not ctx.message.startswith(self.prefix) and not ctx.message.startswith('!'):
-            self.seika.say_for_user(ctx.author.name, ctx.message)
+            self.seika.say_for_user(ctx.author.name, filtered_content)
             return
 
         if ctx.message.startswith(self.prefix):

@@ -41,3 +41,5 @@ VOICE_ID_MAP_JP = {
         'mochiko': '50111',
         'tsumugi': '50031',
         }
+
+SPAM_FILTER_RE = r'(((\b\w+\b)($|\W*|\n)){1,10})(\W*\1)+($|\W)'
