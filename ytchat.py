@@ -2,6 +2,7 @@ import asyncio
 import pytchat
 import logging
 import traceback
+import re
 
 from seikapick import SeikaPick
 from consts import *
@@ -66,6 +67,7 @@ class YtChat:
             return
 
         filtered_content = self.spam_filter_re.sub(r'\2\6', ctx.message)
+        logging.info(filtered_content)
 
         if not ctx.message.startswith(self.prefix) and not ctx.message.startswith('!'):
             self.seika.say_for_user(ctx.author.name, filtered_content)
