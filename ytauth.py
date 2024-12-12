@@ -8,7 +8,6 @@ from google.auth.transport.requests import Request
 import pickle
 
 class YtAuth:
-    vid_id = ''
     MAX_WAIT_SEC = 120
     WAIT_BASE = 2
 
@@ -31,21 +30,31 @@ class YtAuth:
             credentials = self.google_auth(True)
             self.youtube = load(credentials)
 
-        self.vid_id = self.get_vidid()
+        self.vid_ids = self._get_vidids()
 
-        self.chatid = self.get_chatid()
+        self.chatid_map = self._get_chatids()
         print("Ready.")
 
-    def get_vidid(self):
-        request = self.youtube.search().list(
+    def _build_request(self, event_type):
+        return self.youtube.search().list(
             part="snippet",
             channelId=self.channel_id,
-            eventType=self.event_type,
-            maxResults=1,
+            eventType=event_type,
+            maxResults=2,
             order="date",
             type="video"
         )
+
+    def _get_vidids(self):
+        live_event_type = "live"
+        upcoming_event_type = "upcoming"
+
+        request = self._build_request(live_event_type)
         response = request.execute()
+        if not response['items']:
+            # Assume not currently live
+            request = self._build_request(upcoming_event_type)
+            response = request.execute()
 
         incidents = 0
         while not response['items']:
@@ -58,18 +67,25 @@ class YtAuth:
                 # Oscillate wait time
                 incidents = 0
 
-        return response['items'][0]['id']['videoId']
+        videoIds = []
+        for i in range(2):
+            videoIds.append(response['items'][i]['id']['videoId'])
 
-    def get_chatid(self):
+        return videoIds
+
+    def _get_chatids(self):
         print("Getting Chat ID")
 
-        request = self.youtube.videos().list(
-            part="liveStreamingDetails",
-            id=self.vid_id
-        )
-        response = request.execute()
+        chat_id_map = {}
+        for vid_id in self.vid_ids:
+            request = self.youtube.videos().list(
+                part="liveStreamingDetails",
+                id=vid_id
+            )
+            response = request.execute()
+            chat_id_map[vid_id] = response['items'][0]['liveStreamingDetails']['activeLiveChatId']
 
-        return response['items'][0]['liveStreamingDetails']['activeLiveChatId']
+        return chat_id_map
 
 
     def google_auth(self, fetch=False):
@@ -97,13 +113,15 @@ class YtAuth:
 
         return credentials
 
-    async def send(self, msg):
+    async def send(self, msg, vid_id):
+        chatid = self.chatid_map[vid_id]
+
         print("Sending message: ", msg)
         request = self.youtube.liveChatMessages().insert(
             part="snippet",
             body={
               "snippet": {
-                "liveChatId": self.chatid,
+                "liveChatId": chatid,
                 "type": "textMessageEvent",
                 "textMessageDetails": {
                   "messageText": msg

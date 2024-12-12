@@ -77,6 +77,9 @@ class YtChat:
                 traceback.print_exc()
                 print("Ignoring and continuing...")
 
+    async def send(self, msg):
+        await self._ytauth.send(msg, self._vid_id)
+
     async def voice(self, ctx):
         cmd = f"{self.prefix}voice"
 
@@ -87,7 +90,7 @@ class YtChat:
         if not args:
             sep = ', '
             # List subcommands
-            await self._ytauth.send(VOICE_SUB.format(prefix=self.prefix, keys=sep.join(list(self.voice_sub.keys()))))
+            await self.send(VOICE_SUB.format(prefix=self.prefix, keys=sep.join(list(self.voice_sub.keys()))))
             return
 
         subcmd = args.pop(0)
@@ -99,20 +102,20 @@ class YtChat:
         # List TTS voice keys
         voices = self.seika.get_voices()
         sep = ', '
-        await self._ytauth.send(VOICE_LS.format(username=ctx.author.name, voices=sep.join(voices)))
+        await self.send(VOICE_LS.format(username=ctx.author.name, voices=sep.join(voices)))
 
     async def _voice_change(self, ctx, args):
         if not args:
-            await self._ytauth.send(VOICE_CHANGE_USAGE.format(prefix=self.prefix))
-            #await self._ytauth.send(VOICE_CHANGE_CHECK.format(prefix=self.prefix))
+            await self.send(VOICE_CHANGE_USAGE.format(prefix=self.prefix))
+            #await self.send(VOICE_CHANGE_CHECK.format(prefix=self.prefix))
             return
         
         voice_key = args.pop(0)
         success = self.seika.pick_voice(ctx.author.name, voice_key)
         if success:
-            await self._ytauth.send(VOICE_CHANGE_SUCCESS.format(username=ctx.author.name, voice_key=voice_key))
+            await self.send(VOICE_CHANGE_SUCCESS.format(username=ctx.author.name, voice_key=voice_key))
         else:
-            await self._ytauth.send(VOICE_CHANGE_FAIL.format(username=ctx.author.name, prefix=self.prefix))
+            await self.send(VOICE_CHANGE_FAIL.format(username=ctx.author.name, prefix=self.prefix))
 
         if args:
             await self._voice_speed(ctx, args)
@@ -121,19 +124,19 @@ class YtChat:
 
     async def _voice_speed(self, ctx, args):
         if not args:
-            await self._ytauth.send(VOICE_SPEED_USAGE.format(prefix=self.prefix))
+            await self.send(VOICE_SPEED_USAGE.format(prefix=self.prefix))
             return
 
         try:
             speed = float(args.pop(0))
         except ValueError:
-            await self._ytauth.send(VOICE_SPEED_NAN.format(username=ctx.author.name))
+            await self.send(VOICE_SPEED_NAN.format(username=ctx.author.name))
 
         success = self.seika.pick_speed(ctx.author.name, speed)
         if success:
-            await self._ytauth.send(VOICE_SPEED_SUCCESS.format(username=ctx.author.name, speed=speed))
+            await self.send(VOICE_SPEED_SUCCESS.format(username=ctx.author.name, speed=speed))
         else:
-            await self._ytauth.send(VOICE_SPEED_FAIL.format(username=ctx.author.name))
+            await self.send(VOICE_SPEED_FAIL.format(username=ctx.author.name))
 
         if args:
             await self._voice_speed(ctx, args)
@@ -142,20 +145,20 @@ class YtChat:
 
     async def _voice_pitch(self, ctx, args):
         if not args:
-            await self._ytauth.send(VOICE_PITCH_USAGE.format(prefix=self.prefix))
+            await self.send(VOICE_PITCH_USAGE.format(prefix=self.prefix))
             return
 
         try:
             pitch = int(args.pop(0))
         except ValueError:
-            await self._ytauth.send(VOICE_PITCH_NAN.format(username=ctx.author.name))
+            await self.send(VOICE_PITCH_NAN.format(username=ctx.author.name))
             return
 
         success = self.seika.pick_pitch(ctx.author.name, pitch)
         if success:
-            await self._ytauth.send(VOICE_PITCH_SUCCESS.format(username=ctx.author.name, pitch=pitch))
+            await self.send(VOICE_PITCH_SUCCESS.format(username=ctx.author.name, pitch=pitch))
         else:
-            await self._ytauth.send(VOICE_PITCH_FAIL.format(username=ctx.author.name))
+            await self.send(VOICE_PITCH_FAIL.format(username=ctx.author.name))
 
         if args:
             await self._voice_inton(ctx, args)
@@ -164,26 +167,26 @@ class YtChat:
 
     async def _voice_inton(self, ctx, args):
         if not args:
-            await self._ytauth.send(VOICE_INTON_USAGE.format(prefix=self.prefix))
+            await self.send(VOICE_INTON_USAGE.format(prefix=self.prefix))
             return
 
         try:
             inton = int(args.pop(0))
         except ValueError:
-            await self._ytauth.send(VOICE_INTON_NAN.format(username=ctx.author.name))
+            await self.send(VOICE_INTON_NAN.format(username=ctx.author.name))
             return
 
         success = self.seika.pick_intonation(ctx.author.name, inton)
         if success:
             self.seika.save()
-            await self._ytauth.send(VOICE_INTON_SUCCESS.format(username=ctx.author.name, inton=inton))
+            await self.send(VOICE_INTON_SUCCESS.format(username=ctx.author.name, inton=inton))
         else:
-            await self._ytauth.send(VOICE_INTON_FAIL.format(username=ctx.author.name))
+            await self.send(VOICE_INTON_FAIL.format(username=ctx.author.name))
 
     async def _voice_show(self, ctx, args):
         try:
             voice_key, speed, pitch, inton = self.seika.get_params(ctx.author.name)
-            await self._ytauth.send(VOICE_SHOW.format(username=ctx.author.name, voice_key=voice_key, 
+            await self.send(VOICE_SHOW.format(username=ctx.author.name, voice_key=voice_key, 
                 speed=speed, pitch=pitch, inton=inton))
         except KeyError:
-            await self._ytauth.send(VOICE_SHOW_FAIL.format(username=ctx.author.name))
+            await self.send(VOICE_SHOW_FAIL.format(username=ctx.author.name))

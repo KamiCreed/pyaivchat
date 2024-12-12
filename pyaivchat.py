@@ -1,4 +1,5 @@
 import os
+import time
 import argparse
 from multiprocessing import Lock, Process, Queue
 import subprocess
@@ -10,10 +11,10 @@ from twitchchat import TwitchChat
 
 SECRET_FILE = 'client_secret.json'
 
-def start_yt(prefix, tts_queue, ytauth):
+def start_yt(prefix, tts_queue, ytauth, vid_id):
     # TODO: Search for YouTube events and allow user to pick
     ytchat = YtChat(secret_file=SECRET_FILE,
-            vid_id=ytauth.vid_id, prefix=prefix,
+            vid_id=vid_id, prefix=prefix,
             ytauth=ytauth,
             tts_queue=tts_queue)
 
@@ -24,7 +25,7 @@ def start_yt(prefix, tts_queue, ytauth):
             print(e)
             print("Error: YouTube bot crashed. Restarting...")
 
-        sleep(2)
+        time.sleep(2)
 
 def start_twitch(prefix, tts_queue):
     bot = TwitchChat(
@@ -42,7 +43,7 @@ def start_twitch(prefix, tts_queue):
             print(e)
             print("Error: Twitch bot crashed. Restarting...")
 
-        sleep(2)
+        time.sleep(2)
 
 def send_say_requests(tts_queue):
     while True:
@@ -67,8 +68,12 @@ def main():
     
     if not args.no_yt:
         auth = YtAuth(SECRET_FILE, channel_id, event_type)
-        p_yt = Process(target=start_yt, args=(prefix, tts_queue, auth))
-        p_yt.start()
+
+        p_yts = []
+        for vid_id in auth.vid_ids:
+            p_yt = Process(target=start_yt, args=(prefix, tts_queue, auth, vid_id))
+            p_yt.start()
+            p_yts.append(p_yt)
 
     if not args.no_tw:
         p_tw = Process(target=start_twitch, args=(prefix, tts_queue))
@@ -78,7 +83,8 @@ def main():
     send_say_requests(tts_queue)
 
     if not args.no_yt:
-        p_yt.join()
+        for p_yt in p_yts:
+            p_yt.join()
     if not args.no_tw:
         p_tw.join()
 
